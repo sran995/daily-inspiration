@@ -78,6 +78,6 @@
 - [ ] 语录扩充到 60 条
 
 ### 部署
-- [ ] 创建 GitHub 仓库并推送
-- [ ] 开启 GitHub Pages
-- [ ] 验证手机端可访问
+- [x] 创建 GitHub 仓库并推送 ✅
+- [x] 开启 GitHub Pages ✅
+- [x] 上线：https://sran995.github.io/daily-inspiration/ ✅
