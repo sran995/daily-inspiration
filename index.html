@@ -40,6 +40,10 @@
   .nav-btn:hover{color:var(--accent);}
   .nav-btn:disabled{color:var(--border);cursor:default;opacity:.4;}
 
+  .date-label{cursor:pointer;}
+  .date-label:hover #dateStr{color:var(--accent);}
+  .date-picker{position:absolute;width:0;height:0;opacity:0;}
+
   .unit-badge{
     background:var(--accent);color:#fff;padding:5px 16px;border-radius:20px;
     font-size:13px;letter-spacing:2px;font-weight:600;white-space:nowrap;
@@ -184,7 +188,10 @@
   <span class="unit-badge" id="unitBadge"></span>
   <span class="topbar-right date-str">
     <button class="nav-btn" id="prevBtn" title="前一天">&lsaquo;</button>
-    <span id="dateStr"></span>
+    <label class="date-label" id="dateLabel">
+      <span id="dateStr"></span>
+      <input type="date" id="datePicker" class="date-picker">
+    </label>
     <button class="nav-btn" id="nextBtn" title="后一天">&rsaquo;</button>
   </span>
 </div>
@@ -965,6 +972,24 @@ function render() {
   document.getElementById("prevBtn").onclick = function() { if (dispOffset > 0) setDayParam(dispOffset - 1); };
   document.getElementById("nextBtn").disabled = dispOffset >= todayOffset;
   document.getElementById("nextBtn").onclick = function() { if (dispOffset < todayOffset) setDayParam(dispOffset + 1); };
+
+  // Date picker
+  const dp = document.getElementById("datePicker");
+  document.getElementById("dateLabel").onclick = function(e) {
+    e.preventDefault();
+    if (dp.showPicker) { dp.showPicker(); } else { dp.click(); }
+  };
+  function fmtDate(d) { return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0'); }
+  const minDate = new Date(START_DATE);
+  const maxDate = new Date();
+  dp.min = fmtDate(minDate);
+  dp.max = fmtDate(maxDate);
+  dp.value = fmtDate(dispDate);
+  dp.onchange = function() {
+    const picked = new Date(dp.value + 'T00:00:00');
+    const offset = Math.floor((picked - START_DATE) / 86400000);
+    setDayParam(offset);
+  };
 
   const dayOfMonth = dispDate.getDate();
   const q = QUOTES[(dayOfMonth - 1) % QUOTES.length];
