@@ -43,7 +43,8 @@
   .date-label{position:relative;display:inline-block;cursor:pointer;vertical-align:middle;}
   .date-label:hover #dateStr{color:var(--accent);}
   .date-picker{
-    position:absolute;left:0;top:0;width:100%;height:100%;opacity:0;cursor:pointer;
+    position:absolute;left:0;top:0;width:0;height:0;overflow:hidden;
+    clip:rect(0,0,0,0);white-space:nowrap;border:0;
   }
 
   .unit-badge{
@@ -977,6 +978,7 @@ function render() {
 
   // Date picker
   const dp = document.getElementById("datePicker");
+  document.getElementById("dateLabel").onclick = function() { dp.showPicker(); };
   function fmtDate(d) { return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0'); }
   const minDate = new Date(START_DATE);
   const maxDate = new Date();
